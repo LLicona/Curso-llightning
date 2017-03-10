@@ -1,0 +1,1 @@
+<aura:event type="APPLICATION" description="Evento lanzado cuando se da clic al botón cancelar de un diálogo" />

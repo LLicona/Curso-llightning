@@ -1,0 +1,15 @@
+<aura:component controller="ContactListController">
+    <aura:attribute name="con" type="Contact" required="true" />
+    
+    <aura:registerEvent name="contactDeleted" type="c:ContactDeletedEvt" />
+    
+	<tr>
+        <td><input type="checkbox" /></td>
+        <td><ui:outputText value="{! v.con.FirstName + ' ' + v.con.LastName }" /></td>
+        <td><ui:outputPhone value="{! v.con.Phone }" /></td>
+        <td><ui:outputEmail value="{! v.con.Email }" /></td>
+        <td>
+            <lightning:buttonIcon iconName="utility:close" size="small" onclick="{! c.doDeleteContact }" />
+        </td>
+    </tr>
+</aura:component>

@@ -1,0 +1,95 @@
+<aura:component controller="ContactListController">
+    <aura:attribute name="contactList" type="Contact[]" />
+    <aura:attribute name="newContact" type="Contact" 
+                    default="{ 
+                             'sobjectType': 'Contact',
+                             'FirstName': '',
+                             'LastName': '',
+                             'Phone': ''
+                             }" />
+    <aura:attribute name="displayForm" type="Boolean" default="false" />
+    
+    <aura:handler name="init" value="{! this }" action="{! c.doGetContacts }" />
+    
+    <div class="slds-page-header">
+        <div class="slds-grid">
+            <div class="slds-col slds-has-flexi-truncate">
+                <div class="slds-media slds-no-space slds-grow">
+                    <div class="slds-media__figure">
+                        <lightning:icon iconName="standard:user" class="slds-icon-standard-user" />
+                    </div>
+                    <div class="slds-media__body">
+                        <p class="slds-text-title--caps slds-line-height--reset">Cuenta</p>
+                        <h1 class="slds-page-header__title slds-m-right--small slds-align-middle slds-truncate">
+                            Nombre de Cuenta
+                        </h1>
+                    </div>
+                </div>
+            </div>
+            <div class="slds-col slds-no-flex slds-grid slds-align-top">
+                <lightning:button label="Nuevo Contacto" iconName="utility:add" variant="brand" onclick="{! c.showForm }" />          
+            </div>
+        </div>
+    </div>
+    <!-- Page Header -->
+    
+    <h3 class="slds-section-title--divider slds-m-top--medium">Lista de Contactos</h3>
+    <table class="slds-table slds-table--bordered slds-table--cell-buffer">
+        <thead>
+            <tr class="slds-text-title--caps">
+                <th scope="col"></th>
+                <th scope="col">
+                    <div class="slds-truncate" title="Nombre">Nombre</div>
+                </th>
+                <th scope="col">
+                    <div class="slds-truncate" title="Teléfono">Teléfono</div>
+                </th>
+                <th scope="col">
+                    <div class="slds-truncate" title="Email">Email</div>
+                </th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+        	<aura:iteration items="{! v.contactList }" var="con">
+                <c:ContactRecord con="{! con }" contactDeleted="{! c.removeFromList }" />
+            </aura:iteration>
+        </tbody>
+    </table>
+    
+    <aura:if isTrue="{! v.displayForm }">
+    	<c:ModalDialog label="newContactForm" 
+                   hasHeader="true" headerText="Nuevo Contacto"
+                   hasOkButton="true" okButtonText="Guardar"
+                   hasCancelButton="true" cancelButtonText="Cancelar"
+                   okButtonPressed="{! c.doSaveContact }"
+                   cancelButtonPressed="{! c.hideForm }">
+    		<div class="slds-form--stacked">
+                <div class="slds-form-element">
+                    <div class="slds-form-element__control">
+                    	<ui:inputText label="Nombre:" 
+                                      value="{! v.newContact.FirstName }"
+                                      class="slds-input"
+                                      labelClass="slds-form-element__label" />
+                    </div> 
+                </div>
+                <div class="slds-form-element">
+                    <div class="slds-form-element__control">
+                    	<ui:inputText label="Apellidos:" 
+                                      value="{! v.newContact.LastName }"
+                                      class="slds-input"
+                                      labelClass="slds-form-element__label" />
+                    </div> 
+                </div>
+                <div class="slds-form-element">
+                    <div class="slds-form-element__control">
+                    	<ui:inputText label="Teléfono:" 
+                                      value="{! v.newContact.Phone }"
+                                      class="slds-input"
+                                      labelClass="slds-form-element__label" />
+                    </div> 
+                </div>
+            </div>
+    	</c:ModalDialog>
+    </aura:if>
+</aura:component>
